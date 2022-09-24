@@ -1,0 +1,39 @@
+body {
+	margin: 100px;
+}
+
+.grid {
+	border: 2px solid #005500;
+	background: repeating-conic-gradient(#00CC00 0% 25%, #00AA00 0% 50%) 50% / 40px 40px;
+	width: 800px;
+	height: 600px;
+	margin: auto;
+	position: relative;
+}
+.snake {
+	position: absolute;
+	background-color: blue;
+}
+.snake-head {
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+}
+.snake-body {
+	width: 16px;
+	height: 16px;
+	margin: 2px;
+}
+.snake-tail {
+	width: 14px;
+	height: 14px;
+	margin: 3px;
+}
+.food {
+	position: absolute;
+	background-color: red;
+	border-radius: 50%;
+	width: 18px;
+	height: 18px;
+	margin: 1px;
+}
