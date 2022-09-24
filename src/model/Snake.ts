@@ -1,27 +1,35 @@
-import { reactive } from 'vue';
 import { Direction } from './common';
-import Position from './Position';
+import Position, { type IPosition } from './Position';
 
-export class Snake {
-	private _head: Position;
-	private _body: Position[] = [];
-	private _tail: Position;
+export interface ISnake {
+	head: IPosition;
+	body: IPosition[];
+	tail: IPosition;
+	direction: Direction;
+	getNewHeadPosition(): IPosition;
+	moveBody(prevHead: IPosition): void;
+}
+
+export default class Snake implements ISnake {
+	private _head: IPosition;
+	private _body: IPosition[] = [];
+	private _tail: IPosition;
 	private _direction: Direction = Direction.UNKNOWN;
 
-	constructor(startPosition: Position) {
+	constructor(startPosition: IPosition) {
 		this._head = startPosition;
 		this._tail = startPosition;
 	}
 
-	get head(): Position {
+	get head(): IPosition {
 		return this._head;
 	}
 
-	get body(): Position[] {
+	get body(): IPosition[] {
 		return this._body;
 	}
 
-	get tail(): Position {
+	get tail(): IPosition {
 		return this._tail;
 	}
 
@@ -33,7 +41,22 @@ export class Snake {
 		this._direction = direction;
 	}
 
-	public moveBody(prevHead: Position): void {
+	public getNewHeadPosition(): IPosition {
+		switch (this._direction) {
+			case Direction.DOWN:
+				return new Position(this._head.x, this._head.y + 1);
+			case Direction.LEFT:
+				return new Position(this._head.x - 1, this._head.y);
+			case Direction.RIGHT:
+				return new Position(this._head.x + 1, this._head.y);
+			case Direction.UP:
+				return new Position(this._head.x, this._head.y - 1);
+			default:
+				return new Position(this._head.x, this._head.y);
+		}
+	}
+
+	public moveBody(prevHead: IPosition): void {
 		if (this._body.length == 0) {
 			switch (this._direction) {
 				case Direction.DOWN:
@@ -61,17 +84,4 @@ export class Snake {
 			this._body[0].y = prevHead.y;
 		}
 	}
-
-	public reset(x: number, y: number) {
-		const startPosition = new Position(x, y);
-		this._head = startPosition;
-		this._tail = startPosition;
-		this._body = [];
-		this._direction = Direction.UNKNOWN;
-	}
-}
-
-export default function useSnake(x: number, y: number) {
-	const snake = reactive(new Snake(new Position(x, y)));
-	return snake;
 }

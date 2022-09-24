@@ -1,85 +1,46 @@
 <script setup lang="ts">
-import {
-	computed,
-	onMounted,
-	onBeforeUnmount,
-	ref,
-	reactive,
-	type PropType,
-} from 'vue';
-
-import seedrandom from 'seedrandom';
+import { onMounted, onBeforeUnmount, ref, type PropType } from 'vue';
 
 import SnakeFigure from './SnakeFigure.vue';
 import { Direction, GridSize, type GameSize } from '@/model/common';
-import Position, { getCoordinates } from '@/model/Position';
-import useSnake from '@/model/Snake';
+import Position, { getCoordinates, type IPosition } from '@/model/Position';
+
+import useFood from '@/composables/useFood';
+import useSnake from '@/composables/useSnake';
 
 const props = defineProps({
 	gameSize: { type: Object as PropType<GameSize>, required: true },
 });
 
-const RNG = seedrandom();
+const maxX = props.gameSize.w - 1;
+const maxY = props.gameSize.h - 1;
+const gridSize = {
+	width: props.gameSize.w * GridSize + 'px',
+	height: props.gameSize.h * GridSize + 'px',
+};
 
 const snake = useSnake(props.gameSize.w / 2, props.gameSize.h / 2);
-const maxX = computed(() => props.gameSize.w - 1);
-const maxY = computed(() => props.gameSize.h - 1);
-const gridSize = computed(() => {
-	return {
-		width: props.gameSize.w * GridSize + 'px',
-		height: props.gameSize.h * GridSize + 'px',
-	};
-});
-
-const getNewFoodPosition = (): Position => {
-	let foodX, foodY;
-	do {
-		foodX = Math.round(RNG() * maxX.value);
-		foodY = Math.round(RNG() * maxY.value);
-	} while (foodX == snake.head.x && foodY == snake.head.y);
-	return new Position(foodX, foodY);
-};
-
-const food = reactive(getNewFoodPosition());
-
-const placeFood = (): void => {
-	let foodPostion = getNewFoodPosition();
-	food.x = foodPostion.x;
-	food.y = foodPostion.y;
-};
-
+const { food, placeFood } = useFood(maxX, maxY, snake);
+const isGameOver = ref(false);
 const interval = ref(200);
 let timeoutId = 0;
 const gameOver = (): void => {
 	clearTimeout(timeoutId);
 	window.removeEventListener('keydown', onKeyDown);
+	isGameOver.value = true;
 	console.log('GAME OVER');
 };
-const willCollide = (position: Position): boolean => {
+const willCollide = (position: IPosition): boolean => {
 	if (position.x < 0) return true;
-	if (position.x > maxX.value) return true;
+	if (position.x > maxX) return true;
 	if (position.y < 0) return true;
-	if (position.y > maxY.value) return true;
+	if (position.y > maxY) return true;
 	for (let i = 0; i < snake.body.length; i++) {
 		const segment = snake.body[i];
-		if (segment.x === position.x && segment.y === position.y) return true;
+		if (position.x === segment.x && position.y === segment.y) return true;
 	}
-	if (snake.tail.x === position.x && snake.tail.y === position.y) return true;
+	if (position.x === snake.tail.x && position.y === snake.tail.y) return true;
 	return false;
-};
-const getNewHeadPosition = (): Position => {
-	switch (snake.direction) {
-		case Direction.DOWN:
-			return new Position(snake.head.x, snake.head.y + 1);
-		case Direction.LEFT:
-			return new Position(snake.head.x - 1, snake.head.y);
-		case Direction.RIGHT:
-			return new Position(snake.head.x + 1, snake.head.y);
-		case Direction.UP:
-			return new Position(snake.head.x, snake.head.y - 1);
-		default:
-			return new Position(snake.head.x, snake.head.y);
-	}
 };
 const checkAndMove = (): void => {
 	clearTimeout(timeoutId);
@@ -87,7 +48,7 @@ const checkAndMove = (): void => {
 		checkAndMove();
 	}, interval.value);
 	const prevHead = new Position(snake.head.x, snake.head.y);
-	const newHead = getNewHeadPosition();
+	const newHead = snake.getNewHeadPosition();
 	if (willCollide(newHead)) {
 		gameOver();
 		return;
@@ -158,6 +119,6 @@ onBeforeUnmount((): void => {
 <template>
 	<div class="grid" :style="gridSize">
 		<div class="food" :style="getCoordinates(food)"></div>
-		<SnakeFigure :snake="snake"></SnakeFigure>
+		<SnakeFigure :snake="snake" :is-game-over="isGameOver"></SnakeFigure>
 	</div>
 </template>

@@ -12,6 +12,9 @@ body {
 	position: absolute;
 	background-color: blue;
 }
+.snake.game-over {
+	background-color: purple;
+}
 .snake-head {
 	border-radius: 50%;
 	width: 20px;

@@ -2,15 +2,20 @@
 import type { PropType } from 'vue';
 
 import { getCoordinates } from '@/model/Position';
-import type { Snake } from '@/model/Snake';
+import type ISnake from '@/model/Snake';
 
 defineProps({
-	snake: { type: Object as PropType<Snake>, required: true },
+	snake: { type: Object as PropType<ISnake>, required: true },
+	isGameOver: { type: Boolean },
 });
 </script>
 
 <template>
-	<div class="snake snake-head" :style="getCoordinates(snake.head)"></div>
+	<div
+		class="snake snake-head"
+		:class="{ 'game-over': isGameOver }"
+		:style="getCoordinates(snake.head)"
+	></div>
 	<template v-if="snake.body.length > 0">
 		<div
 			v-for="(segment, index) in snake.body"

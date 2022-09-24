@@ -1,7 +1,12 @@
 import type { CSSProperties } from 'vue';
 import { GridSize } from './common';
 
-export default class Position {
+export interface IPosition {
+	x: number;
+	y: number;
+}
+
+export default class Position implements IPosition {
 	private _x: number;
 	private _y: number;
 
@@ -27,7 +32,7 @@ export default class Position {
 	}
 }
 
-export const getCoordinates = (position: Position): CSSProperties => {
+export const getCoordinates = (position: IPosition): CSSProperties => {
 	return {
 		left: position.x * GridSize + 'px',
 		top: position.y * GridSize + 'px',
