@@ -33,15 +33,7 @@ export class Snake {
 		this._direction = direction;
 	}
 
-	public moveX(delta: number): void {
-		this._head.x += delta;
-	}
-
-	public moveY(delta: number): void {
-		this._head.y += delta;
-	}
-
-	public moveBody = (prevHead: Position): void => {
+	public moveBody(prevHead: Position): void {
 		if (this._body.length == 0) {
 			switch (this._direction) {
 				case Direction.DOWN:
@@ -68,6 +60,14 @@ export class Snake {
 			this._body[0].x = prevHead.x;
 			this._body[0].y = prevHead.y;
 		}
+	}
+
+	public reset(x: number, y: number) {
+		const startPosition = new Position(x, y);
+		this._head = startPosition;
+		this._tail = startPosition;
+		this._body = [];
+		this._direction = Direction.UNKNOWN;
 	}
 }
 

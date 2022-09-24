@@ -5,8 +5,6 @@ body {
 .grid {
 	border: 2px solid #005500;
 	background: repeating-conic-gradient(#00CC00 0% 25%, #00AA00 0% 50%) 50% / 40px 40px;
-	width: 800px;
-	height: 600px;
 	margin: auto;
 	position: relative;
 }

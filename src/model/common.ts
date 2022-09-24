@@ -12,3 +12,8 @@ export interface Coordinates {
 	left: string;
 	top: string;
 }
+
+export interface GameSize {
+	w: number;
+	h: number;
+}
