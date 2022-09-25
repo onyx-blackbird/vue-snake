@@ -13,7 +13,7 @@ defineProps({
 <template>
 	<div
 		class="snake snake-head"
-		:class="{ 'game-over': isGameOver }"
+		:class="{ dead: isGameOver }"
 		:style="getCoordinates(snake.head)"
 	></div>
 	<template v-if="snake.body.length > 0">

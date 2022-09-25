@@ -11,7 +11,7 @@ const options = ref([
 	{ text: '1200x800', value: { w: 60, h: 40 } },
 ]);
 
-const size = ref('');
+const size = ref({ w: 0, h: 0 });
 const startGame = ref(false);
 const gameSize = ref();
 const start = () => {

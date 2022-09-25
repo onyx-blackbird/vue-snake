@@ -1,7 +1,14 @@
 body {
-	margin: 100px;
+	margin: 0;
 }
-
+header {
+	margin: 30px;
+	text-align: center;
+}
+select, button {
+	margin: 10px 20px;
+	width: 150px;
+}
 .grid {
 	border: 2px solid #005500;
 	background: repeating-conic-gradient(#00CC00 0% 25%, #00AA00 0% 50%) 50% / 40px 40px;
@@ -10,10 +17,10 @@ body {
 }
 .snake {
 	position: absolute;
-	background-color: blue;
+	background: radial-gradient(DodgerBlue, Blue);
 }
-.snake.game-over {
-	background-color: purple;
+.snake.dead {
+	background: radial-gradient(DarkOrchid, Purple);
 }
 .snake-head {
 	border-radius: 50%;
@@ -21,20 +28,36 @@ body {
 	height: 20px;
 }
 .snake-body {
-	width: 16px;
-	height: 16px;
-	margin: 2px;
-}
-.snake-tail {
-	width: 14px;
-	height: 14px;
-	margin: 3px;
-}
-.food {
-	position: absolute;
-	background-color: red;
 	border-radius: 50%;
 	width: 18px;
 	height: 18px;
 	margin: 1px;
+}
+.snake-tail {
+	border-radius: 50%;
+	width: 16px;
+	height: 16px;
+	margin: 2px;
+}
+.food {
+	position: absolute;
+	background: radial-gradient(Red, DarkRed);
+	border-radius: 50%;
+	width: 18px;
+	height: 18px;
+	margin: 1px;
+}
+.score {
+	line-height: 20px;
+	margin: 10px;
+	text-align: center;
+}
+.score .food {
+	margin-left: 10px;
+}
+.game-over {
+	color: Red;
+	font-size: large;
+	margin: 10px;
+	text-align: center;
 }

@@ -21,6 +21,7 @@ const gridSize = {
 
 const snake = useSnake(props.gameSize.w / 2, props.gameSize.h / 2);
 const { food, placeFood } = useFood(maxX, maxY, snake);
+const score = ref(0);
 const isGameOver = ref(false);
 const interval = ref(200);
 let timeoutId = 0;
@@ -28,7 +29,6 @@ const gameOver = (): void => {
 	clearTimeout(timeoutId);
 	window.removeEventListener('keydown', onKeyDown);
 	isGameOver.value = true;
-	console.log('GAME OVER');
 };
 const willCollide = (position: IPosition): boolean => {
 	if (position.x < 0) return true;
@@ -57,6 +57,7 @@ const checkAndMove = (): void => {
 		snake.head.y = newHead.y;
 	}
 	if (snake.head.x == food.x && snake.head.y == food.y) {
+		score.value++;
 		snake.body.unshift(prevHead);
 		placeFood();
 		if (interval.value > 50) {
@@ -117,6 +118,11 @@ onBeforeUnmount((): void => {
 </script>
 
 <template>
+	<div class="score">
+		<span>{{ score }}</span>
+		<span class="food"></span>
+	</div>
+	<div v-if="isGameOver" class="game-over">GAME OVER</div>
 	<div class="grid" :style="gridSize">
 		<div class="food" :style="getCoordinates(food)"></div>
 		<SnakeFigure :snake="snake" :is-game-over="isGameOver"></SnakeFigure>
