@@ -1,8 +1,14 @@
 body {
 	margin: 0;
 }
-header {
-	margin: 30px;
+#app {
+	font-family: Avenir, Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	color: #333333;
+}
+header, p {
+	margin: 20px;
 	text-align: center;
 }
 select, button {

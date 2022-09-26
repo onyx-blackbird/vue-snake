@@ -71,6 +71,7 @@ const checkAndMove = (): void => {
 const onKeyDown = (event: KeyboardEvent): void => {
 	switch (event.key) {
 		case 'ArrowDown':
+		case 's':
 			if (
 				snake.direction != Direction.DOWN &&
 				snake.direction != Direction.UP
@@ -80,6 +81,7 @@ const onKeyDown = (event: KeyboardEvent): void => {
 			}
 			break;
 		case 'ArrowLeft':
+		case 'a':
 			if (
 				snake.direction != Direction.LEFT &&
 				snake.direction != Direction.RIGHT
@@ -89,6 +91,7 @@ const onKeyDown = (event: KeyboardEvent): void => {
 			}
 			break;
 		case 'ArrowRight':
+		case 'd':
 			if (
 				snake.direction != Direction.RIGHT &&
 				snake.direction != Direction.LEFT
@@ -98,6 +101,7 @@ const onKeyDown = (event: KeyboardEvent): void => {
 			}
 			break;
 		case 'ArrowUp':
+		case 'w':
 			if (
 				snake.direction != Direction.UP &&
 				snake.direction != Direction.DOWN
@@ -118,8 +122,9 @@ onBeforeUnmount((): void => {
 </script>
 
 <template>
+	<p>User arrow or WASD keys to change direction</p>
 	<div class="score">
-		<span>{{ score }}</span>
+		<span>Score: {{ score }}</span>
 		<span class="food"></span>
 	</div>
 	<div v-if="isGameOver" class="game-over">GAME OVER</div>
